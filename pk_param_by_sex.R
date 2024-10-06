@@ -80,7 +80,7 @@ merged_df %>%
   stat_poly_eq(formula = lm_formula, 
                aes(label = paste(..eq.label.., ..rr.label.., sep = "~~~")), 
                parse = TRUE) +
-  facet_wrap(~Sex, scales = 'free_x') +
+  #facet_wrap(~Sex, scales = 'free_x') +
   theme_light()
 
 # spearman's rho
