@@ -2,7 +2,7 @@ library(dplyr)
 library(ggplot2)
 
 # load data
-conc_vs_time_df <- read.csv('grapipriant_conc_vs_time.csv')
+conc_vs_time_df <- read.csv('grapiprant_conc_vs_time.csv')
 
 # set timepoints for x-axis ticks
 x_major_ticks <- c(0, 0.25, 0.5, 1, 2, 4, 8, 12, 24, 48)
@@ -28,7 +28,7 @@ individual_plot <- conc_vs_time_df %>%
           legend.text =element_text(size=20)
     )
 individual_plot
-individual_outpath <- 'grapipriant_conc_vs_time_individuals_7x6.pdf'
+individual_outpath <- 'grapiprant_conc_vs_time_individuals_7x6.pdf'
 ggsave(individual_outpath,
        individual_plot,
        width = 7,
@@ -62,7 +62,7 @@ group_by_sex_plot <- conc_vs_time_df %>%
       )
 
 group_by_sex_plot
-group_by_sex_plot_outpath <- 'grapipriant_conc_vs_time_sex_7x6.pdf'
+group_by_sex_plot_outpath <- 'grapiprant_conc_vs_time_sex_7x6.pdf'
 ggsave(group_by_sex_plot_outpath,
        group_by_sex_plot,
        width = 7,
@@ -98,7 +98,7 @@ combined_group_plot <- conc_vs_time_df %>%
   scale_color_manual(values=c("black"))
 combined_group_plot
 
-combined_group_plot_outpath <- 'grapipriant_conc_vs_time_combined_7x6.pdf'
+combined_group_plot_outpath <- 'grapiprant_conc_vs_time_combined_7x6.pdf'
 ggsave(combined_group_plot_outpath,
        combined_group_plot,
        width = 7,
