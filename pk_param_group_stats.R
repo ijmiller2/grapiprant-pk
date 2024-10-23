@@ -24,14 +24,19 @@ merged_df <- merge(params_df, group_df)
 merged_df$Vz_F_obs <- merged_df$`Dose (mg)` / (merged_df$Lambda_z * merged_df$AUCINF_obs)
 merged_df$Cl_F_obs <- merged_df$`Dose (mg)` / merged_df$AUCINF_obs
 
+# use cols
+use_cols <- c("Cmax", "AUCINF_obs", "AUClast", "Tmax", "Lambda_z",
+              "HL_Lambda_z", "Vz_F_obs", "Cl_F_obs", "Sex")
+
 # compute means, by sex
 stats_by_sex <- merged_df %>%
-  select(Cmax, AUCINF_obs, Tmax, Lambda_z, HL_Lambda_z, Vz_F_obs, Cl_F_obs, Sex) %>%
+  select(all_of(use_cols)) %>%
   group_by(Sex) %>%
   summarize(
     Cmax_mean = round(mean(Cmax), 1), Cmax_sd = round(sd(Cmax), 1),
     Tmax_mean = mean(Tmax), Tmax_sd = sd(Tmax),
     AUCINF_obs_mean = round(mean(AUCINF_obs), 1), AUCINF_obs_sd = round(sd(AUCINF_obs), 1),
+    AUClast_obs_mean = round(mean(AUClast), 1), AUClast_obs_sd = round(sd(AUClast), 1),
     Lambda_z_mean = round(mean(Lambda_z), 1), Lambda_z_sd = round(sd(Lambda_z), 1),
     HL_Lambda_z_mean = round(mean(HL_Lambda_z), 1), HL_Lambda_z_sd = round(sd(HL_Lambda_z), 1),
     Vz_F_obs_mean = round(mean(Vz_F_obs), 1), Vz_F_obs_sd = round(sd(Vz_F_obs), 1),
@@ -41,11 +46,12 @@ stats_by_sex
 
 # compute combined group stats
 whole_group_stats <- merged_df %>%
-  select(Cmax, AUCINF_obs, Tmax, Lambda_z, HL_Lambda_z, Vz_F_obs, Cl_F_obs) %>%
+  select(all_of(use_cols)) %>%
   summarize(
     Cmax_mean = round(mean(Cmax), 1), Cmax_sd = round(sd(Cmax), 1),
     Tmax_mean = mean(Tmax), Tmax_sd = sd(Tmax),
     AUCINF_obs_mean = round(mean(AUCINF_obs), 1), AUCINF_obs_sd = round(sd(AUCINF_obs), 1),
+    AUClast_obs_mean = round(mean(AUClast), 1), AUClast_obs_sd = round(sd(AUClast), 1),
     Lambda_z_mean = round(mean(Lambda_z), 1), Lambda_z_sd = round(sd(Lambda_z), 1),
     HL_Lambda_z_mean = round(mean(HL_Lambda_z), 1), HL_Lambda_z_sd = round(sd(HL_Lambda_z), 1),
     Vz_F_obs_mean = round(mean(Vz_F_obs), 1), Vz_F_obs_sd = round(sd(Vz_F_obs), 1),
@@ -58,10 +64,10 @@ whole_group_stats
 # filter merged df by sex
 male_params_df <- merged_df %>%
   filter(Sex=="M") %>%
-  select(Animal_ID_, Cmax, AUCINF_obs, Tmax, Lambda_z, HL_Lambda_z, Vz_F_obs, Cl_F_obs, Sex)
+  select(all_of(use_cols))
 female_params_df <- merged_df %>%
   filter(Sex=="F") %>%
-  select(Animal_ID_, Cmax, AUCINF_obs, Tmax, Lambda_z, HL_Lambda_z, Vz_F_obs, Cl_F_obs, Sex)
+  select(all_of(use_cols))
 
 # cmax
 cmax_sex_wilcox_results <- wilcox.test(male_params_df$Cmax, female_params_df$Cmax,
@@ -74,6 +80,12 @@ AUCINF_obs_sex_wilcox_results <- wilcox.test(male_params_df$AUCINF_obs, female_p
                                        paired = F, alternative = "two.sided")
 AUCINF_obs_sex_wilcox_results
 AUCINF_obs_sex_wilcox_results$p.value
+
+# AUClast
+AUClast_sex_wilcox_results <- wilcox.test(male_params_df$AUClast, female_params_df$AUClast,
+                                             paired = F, alternative = "two.sided")
+AUClast_sex_wilcox_results
+AUClast_sex_wilcox_results$p.value
 
 # Lambda_z
 lambdaz_sex_wilcox_results <- wilcox.test(male_params_df$Lambda_z, female_params_df$Lambda_z,
