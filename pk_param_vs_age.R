@@ -53,7 +53,7 @@ ggsave(age_histogram_outpath,
 param_vs_age_df <- data.frame()
 
 # for each param, get corr coef
-params <- c("Cmax", "AUCINF_obs", "Lambda_z", "Vz_F_obs", "Cl_F_obs")
+params <- c("Cmax", "AUCINF_obs", "Lambda_z", "HL_Lambda_z", "Vz_F_obs", "Cl_F_obs")
 for (param in params){
   print(param)
   spearman_corr = cor.test(merged_df[[param]], merged_df[['AgeYrs']])
@@ -91,7 +91,7 @@ for (sex in c("M", "F")){
 }
 
 # multiple hypothesis correction
-param_vs_age_df$spearman_q_val <- p.adjust(param_vs_age_df$spearman_p_val, method = 'BH') 
+param_vs_age_df$spearman_q_val <- p.adjust(param_vs_age_df$spearman_p_val, method = 'BY') 
 
 # write out the table
 param_vs_age_df_outpath <- "data/spearman_param_vs_age_df.csv"
