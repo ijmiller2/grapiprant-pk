@@ -44,7 +44,7 @@ group_by_sex_plot <- conc_vs_time_df %>%
     ) %>%
     ggplot(aes(x=timepoint, y=plasma_conc_ng_mean)) +
     geom_line(aes(color=factor(sex)), size=1) +
-      geom_point(aes(color=sex), size=3) +
+      geom_point(aes(color=sex, shape=factor(sex)), size=3) +
       geom_errorbar(aes(
         ymin = plasma_conc_ng_mean-plasma_conc_ng_sd,
         ymax = plasma_conc_ng_mean+plasma_conc_ng_sd,
@@ -52,7 +52,7 @@ group_by_sex_plot <- conc_vs_time_df %>%
         width = 2, size=1) +
       scale_x_continuous(breaks=x_major_ticks, minor_breaks = NULL, labels=scale_fun) +
       scale_color_brewer(palette="Paired") +
-      labs(color='Subject Sex', x='Timepoint (hrs)', y='Plasma Concentration (ng/mL)') +
+      labs(color='Subject Sex', shape='Subject Sex', x='Timepoint (hrs)', y='Plasma Concentration (ng/mL)') +
       theme_light() + 
       theme(axis.text=element_text(size=20), 
             axis.text.x=element_text(angle = 90, vjust = 0.5, hjust=1),
